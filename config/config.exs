@@ -22,6 +22,11 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :eop_chat_backend, :auth0,
+  app_baseurl: "thecodis.auth0.com",
+  app_id: "2VcZR3UcUz2rxzER1th6ejyMT5d7F4LE",
+  app_secret: "zElYtjI2Ah0TrArD3T9LkSbWdP2B86W9_YRKSuza07wsXM3qGDV-5wZUw4xjq5Pa"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
