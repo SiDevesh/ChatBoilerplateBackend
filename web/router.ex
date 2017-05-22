@@ -15,10 +15,7 @@ defmodule EopChatBackend.Router do
 
 pipeline :api_auth do
   plug :accepts, ["json"]
-  plug Joken.Plug,
-    verify: &EopChatBackend.JWTHelpers.verify/0,
-    on_error: &EopChatBackend.JWTHelpers.error/2
-  #plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+  plug Guardian.Plug.VerifyHeader, realm: "Bearer"
   plug Guardian.Plug.LoadResource
 end  
 

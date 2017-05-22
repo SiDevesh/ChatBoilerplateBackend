@@ -1,6 +1,6 @@
 defmodule EopChatBackend.V1.OverviewController do
   use EopChatBackend.Web, :controller
-  #plug Guardian.Plug.EnsureAuthenticated, handler: __MODULE__
+  plug Guardian.Plug.EnsureAuthenticated, handler: __MODULE__
 
   def index(conn, _params) do
   	user = Guardian.Plug.current_resource(conn)
