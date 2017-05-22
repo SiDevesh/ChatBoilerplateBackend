@@ -19,7 +19,7 @@ pipeline :api_auth do
     verify: &EopChatBackend.JWTHelpers.verify/0,
     on_error: &EopChatBackend.JWTHelpers.error/2
   #plug Guardian.Plug.VerifyHeader, realm: "Bearer"
-  #plug Guardian.Plug.LoadResource
+  plug Guardian.Plug.LoadResource
 end  
 
   scope "/", EopChatBackend do

@@ -27,6 +27,16 @@ config :eop_chat_backend, :auth0,
   app_id: "2VcZR3UcUz2rxzER1th6ejyMT5d7F4LE",
   app_secret: "zElYtjI2Ah0TrArD3T9LkSbWdP2B86W9_YRKSuza07wsXM3qGDV-5wZUw4xjq5Pa"
 
+config :guardian, Guardian,
+  allowed_algos: ["HS256"], # optional
+  verify_module: Guardian.JWT,  # optional
+  issuer: "thecodis.auth0.com",
+  ttl: { 30, :days },
+  allowed_drift: 2000,
+  verify_issuer: true, # optional
+  secret_key: "zElYtjI2Ah0TrArD3T9LkSbWdP2B86W9_YRKSuza07wsXM3qGDV-5wZUw4xjq5Pa",
+  serializer: EopChatBackend.GuardianSerializer
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
