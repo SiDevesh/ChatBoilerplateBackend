@@ -16,7 +16,10 @@ defmodule EopChatBackend.Router do
 pipeline :api_auth do
   plug :accepts, ["json"]
   plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+  plug Guardian.Plug.EnsureAuthenticated, handler: EopChatBackend.GuardianErrorHandler
+  plug EopChatBackend.Plugs.EmailVerified, handler: EopChatBackend.GuardianErrorHandler
   plug Guardian.Plug.LoadResource
+  plug Guardian.Plug.EnsureResource, handler: EopChatBackend.GuardianErrorHandler
 end  
 
   scope "/", EopChatBackend do

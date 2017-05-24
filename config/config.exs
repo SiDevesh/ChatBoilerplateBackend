@@ -33,7 +33,7 @@ config :guardian, Guardian,
   issuer: "thecodis.auth0.com",
   ttl: { 30, :days },
   allowed_drift: 2000,
-  verify_issuer: true, # optional
+  verify_issuer: false, # doesn't work if this is true
   secret_key: "zElYtjI2Ah0TrArD3T9LkSbWdP2B86W9_YRKSuza07wsXM3qGDV-5wZUw4xjq5Pa",
   serializer: EopChatBackend.GuardianSerializer
 
