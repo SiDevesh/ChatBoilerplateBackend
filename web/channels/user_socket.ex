@@ -1,8 +1,11 @@
 defmodule EopChatBackend.UserSocket do
   use Phoenix.Socket
+  alias EopChatBackend.Repo
+  alias EopChatBackend.User
 
   ## Channels
-  # channel "room:*", EopChatBackend.RoomChannel
+  channel "private:*", EopChatBackend.PrivateRoomChannel
+  channel "group:*", EopChatBackend.GroupRoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -19,8 +22,17 @@ defmodule EopChatBackend.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(%{"token" => jwt}, socket) do
+    case Guardian.decode_and_verify(jwt) do
+      { :ok, claims } ->
+        the_user = Repo.get_by(User, auth0_id: claims["sub"])
+        if the_user == nil do
+          :error
+        else
+          {:ok, assign(socket, :current_user, the_user)}
+        end
+      { :error, _reason } -> :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
