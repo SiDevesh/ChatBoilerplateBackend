@@ -1,5 +1,7 @@
 defmodule EopChatBackend.PrivateRoomChannel do
   use Phoenix.Channel
+  alias EopChatBackend.Repo
+  alias EopChatBackend.User
   #require Logger
 
   def join("private:" <> concated_ids, _message, socket) do
@@ -12,7 +14,22 @@ defmodule EopChatBackend.PrivateRoomChannel do
           {:error, %{reason: "Improper ordered ids"}}
         first_id < second_id ->
           if socket.assigns[:current_user].auth0_id == first_id or socket.assigns[:current_user].auth0_id == second_id do
-            {:ok, socket}
+            if socket.assigns[:current_user].auth0_id == first_id do
+              the_user = Repo.get_by(User, auth0_id: second_id)
+              if the_user == nil do
+                {:error, %{reason: "Invalid id"}}
+              else
+                {:ok, socket}
+              end
+            end
+            if socket.assigns[:current_user].auth0_id == second_id do
+              the_user = Repo.get_by(User, auth0_id: first_id)
+              if the_user == nil do
+                {:error, %{reason: "Invalid id"}}
+              else
+                {:ok, socket}
+              end
+            end
           else
             {:error, %{reason: "Unauthorised"}}
           end

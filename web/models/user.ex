@@ -3,7 +3,8 @@ defmodule EopChatBackend.User do
 
   schema "users" do
     field :auth0_id, :string
-
+    has_many :sent_messages, EopChatBackend.PrivateMessage, foreign_key: :sender_id
+    has_many :received_messages, EopChatBackend.PrivateMessage, foreign_key: :receiver_id
     timestamps()
   end
 
