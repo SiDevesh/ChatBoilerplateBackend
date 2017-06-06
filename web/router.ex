@@ -24,14 +24,14 @@ end
 
   scope "/", EopChatBackend do
     pipe_through :browser # Use the default browser stack
-
     get "/", PageController, :index
   end
 
   scope "/api", EopChatBackend do
     pipe_through :api_auth
-      scope "/v1", V1, as: :v1 do
-        get "/overview", OverviewController, :index
-      end
+    scope "/v1", V1, as: :v1 do
+      get "/overview", OverviewController, :index
+      get "/previous_messages/private/:auth0_id", PreviousMessagesController, :private_messages
+    end
   end
 end
