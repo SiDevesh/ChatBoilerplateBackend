@@ -36,6 +36,7 @@ defmodule EopChatBackend.V1.PreviousMessagesController do
       #so no need to handle,
       #if they give -something it will return nothing since everything is greateer than negative,
       #so no need to handle this too
+      #Also now client can now last page when it receive response with empty array
       if Map.has_key?(params, "last") do
         query4 = from u in query3,
                  where: u.id < ^params["last"],
@@ -46,7 +47,7 @@ defmodule EopChatBackend.V1.PreviousMessagesController do
       end
       messages = Repo.all(query4)
       conn
-      |> json %{is_last: true, messages: Enum.map(messages, &message_json/1)}
+      |> json %{messages: Enum.map(messages, &message_json/1)}
     end
   end
 
@@ -54,8 +55,8 @@ defmodule EopChatBackend.V1.PreviousMessagesController do
     %{
       id: message.id,
       content: message.content,
-      sender_id: message.sender_id,
-      receiver_id: message.receiver_id,
+      sender_id: Repo.get_by(User, id: message.sender_id).auth0_id,
+      receiver_id: Repo.get_by(User, id: message.receiver_id).auth0_id,
       inserted_at: message.inserted_at
     }
   end
