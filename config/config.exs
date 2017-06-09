@@ -12,7 +12,7 @@ config :eop_chat_backend,
 # Configures the endpoint
 config :eop_chat_backend, EopChatBackend.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "DkIxosbRaow/1iPk3x8RMWo2uKBtjXDe8+o1TwJjZTBzHZN0KYEVDGSbWMDVxIFR",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [view: EopChatBackend.ErrorView, accepts: ~w(html json)],
   pubsub: [name: EopChatBackend.PubSub,
            adapter: Phoenix.PubSub.PG2]
@@ -24,17 +24,17 @@ config :logger, :console,
 
 config :eop_chat_backend, :auth0,
   app_baseurl: "thecodis.auth0.com",
-  app_id: "2VcZR3UcUz2rxzER1th6ejyMT5d7F4LE",
-  app_secret: "zElYtjI2Ah0TrArD3T9LkSbWdP2B86W9_YRKSuza07wsXM3qGDV-5wZUw4xjq5Pa"
+  app_id: System.get_env("AUTH0_ID"),
+  app_secret: System.get_env("AUTH0_SECRET")
 
 config :guardian, Guardian,
   allowed_algos: ["HS256"], # optional
   verify_module: Guardian.JWT,  # optional
-  issuer: "thecodis.auth0.com",
+  issuer: System.get_env("AUTH0_DOMAIN"),
   ttl: { 30, :days },
   allowed_drift: 2000,
   verify_issuer: false, # doesn't work if this is true
-  secret_key: "zElYtjI2Ah0TrArD3T9LkSbWdP2B86W9_YRKSuza07wsXM3qGDV-5wZUw4xjq5Pa",
+  secret_key: System.get_env("AUTH0_SECRET"),
   serializer: EopChatBackend.GuardianSerializer
 
 # Import environment specific config. This must remain at the bottom
