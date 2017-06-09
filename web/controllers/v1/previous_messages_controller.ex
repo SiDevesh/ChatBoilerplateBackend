@@ -18,7 +18,7 @@ defmodule EopChatBackend.V1.PreviousMessagesController do
     if param_user == nil || param_user.id == user.id  do
       conn
       |> put_status(400)
-      |> json %{errors: ["Invalid user id"]}
+      |> json(%{errors: ["Invalid user id"]})
     else
       #query = from u in PrivateMessage,
       #        where: u.sender_id == ^user.auth0_id and u.receiver_id == ^params.auth0_id or u.sender_id == ^params.auth0_id and u.receiver_id == ^user.auth0_id
@@ -47,7 +47,7 @@ defmodule EopChatBackend.V1.PreviousMessagesController do
       end
       messages = Repo.all(query4)
       conn
-      |> json %{messages: Enum.map(messages, &message_json/1)}
+      |> json(%{messages: Enum.map(messages, &message_json/1)})
     end
   end
 
